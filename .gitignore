@@ -93,3 +93,33 @@ crashlytics-build.properties
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# ── Third-party packages (import from the Asset Store; not redistributed here) ──
+/Assets/ASTROFISH_GAMES/
+/Assets/ASTROFISH_GAMES.meta
+/Assets/Advance Studios/
+/Assets/Advance Studios.meta
+/Assets/Fantasy Skybox FREE/
+/Assets/Fantasy Skybox FREE.meta
+/Assets/JC_LP_MedievalCharacters_LITE/
+/Assets/JC_LP_MedievalCharacters_LITE.meta
+/Assets/JMO Assets/
+/Assets/JMO Assets.meta
+/Assets/Lowpoly Forest Pack Winter/
+/Assets/Lowpoly Forest Pack Winter.meta
+/Assets/MedievalCastlePackLite/
+/Assets/MedievalCastlePackLite.meta
+/Assets/NatureManufacture Assets/
+/Assets/NatureManufacture Assets.meta
+/Assets/Polytope Studio/
+/Assets/Polytope Studio.meta
+/Assets/Stylize Snow Texture/
+/Assets/Stylize Snow Texture.meta
+/Assets/Wolf/
+/Assets/Wolf.meta
+/Assets/TutorialInfo/
+/Assets/TutorialInfo.meta
+/Assets/_Recovery/
+/Assets/_Recovery.meta
+/Assets/Readme.asset
+/Assets/Readme.asset.meta

@@ -13,27 +13,30 @@ public class StoryIntro : MonoBehaviour
     };
 
     [TextArea] public string[] bodies = {
-        "You are ALDRIC FROST, commander of the Frozen Watch.\n\n" +
-        "Beyond the Great Barrier, the undead RISEN gather under the Winter Lord. " +
-        "They march to extinguish the WATCHFIRE — the heart of the keep — and overrun the south.\n\n" +
-        "Hold the wall. Keep the fire alight.",
+        "Night falls, commander.\n\n" +
+        "You are ALDRIC FROST, last warden of the Frozen Watch. " +
+        "Past the Great Barrier, the dead are walking. The RISEN answer the Winter Lord, " +
+        "and they want one thing: the WATCHFIRE.\n\n" +
+        "Let that flame die and the whole south freezes with it.\n\n" +
+        "Hold the wall. Keep the fire burning.",
 
-        "Defend the WATCHFIRE through 3 waves of attackers.\n\n" +
-        "The enemy strikes on TWO routes:\n" +
-        "   •  the MAIN GATE  — a frontal assault (NavMesh)\n" +
-        "   •  the TUNNEL  — a flanking breach guided by A* pathfinding\n\n" +
-        "WIN: survive all 3 waves with the Watchfire still burning.\n" +
-        "LOSE: the Watchfire is extinguished.\n\n" +
-        "Your guards defend in two squads (gate + watchfire). Help where the line is thin.",
+        "Three waves are coming. Stand through all of them.\n\n" +
+        "They hit you from two sides at once:\n" +
+        "   •  the MAIN GATE, a straight charge into your spears\n" +
+        "   •  the TUNNEL, a sneak run that worms in from the flank\n\n" +
+        "WIN  if the Watchfire is still lit when the third wave breaks.\n" +
+        "LOSE  the moment that fire goes dark.\n\n" +
+        "Two squads hold the line for you, one at the gate, one at the fire. " +
+        "Wherever it bends, that is where you go.",
 
-        "F        possess / release a guard\n" +
-        "WASD   move      SHIFT  run      MOUSE  look\n" +
-        "LMB / SPACE   attack\n" +
-        "G        open / close the main gate\n" +
-        "Y / U   seal the tunnel doors (block the A* breach)\n" +
-        "Q        war horn — rally your guards\n" +
-        "ESC     menu        R   restart        F2  this screen\n\n" +
-        "Press  BEGIN  to raise the watch.",
+        "F        jump into a guard, press again to step out\n" +
+        "WASD   move      SHIFT  sprint      MOUSE  look\n" +
+        "LMB / SPACE   swing\n" +
+        "G        raise or drop the main gate\n" +
+        "Y / U   slam the tunnel doors shut\n" +
+        "Q        sound the war horn and rally the watch\n" +
+        "ESC     menu        R   start over        F2  read this again\n\n" +
+        "Press  BEGIN  and raise the watch.",
     };
 
     public Key advanceKey = Key.Enter;
