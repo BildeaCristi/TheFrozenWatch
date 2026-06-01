@@ -10,13 +10,32 @@ actually plays, instead of separate demos.
 
 ## Media
 
-> Gameplay video: _add your link here_
->
-> Screenshots:
->
-> <!-- drop images in a /Media folder and reference them, e.g. -->
-> <!-- ![Siege](Media/siege.png) -->
-> <!-- ![Tunnel A*](Media/tunnel.png) -->
+### Gameplay video
+
+<video src="https://github.com/BildeaCristi/TheFrozenWatch/raw/main/Media/gameplay.mp4" controls width="100%"></video>
+
+If the player does not load inline, [watch or download the gameplay video here](Media/gameplay.mp4).
+
+### Screenshots
+
+<table>
+  <tr>
+    <td><img src="Media/01-intro.jpg" width="420"><br><sub>Story and tutorial intro</sub></td>
+    <td><img src="Media/02-thirdperson.jpg" width="420"><br><sub>Third-person combat on the wall</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Media/03-tunnel.jpg" width="420"><br><sub>A* labyrinth breach</sub></td>
+    <td><img src="Media/04-rally.jpg" width="420"><br><sub>War Horn rally</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Media/05-scene.jpg" width="420"><br><sub>The fort under siege</sub></td>
+    <td><img src="Media/06-hud.jpg" width="420"><br><sub>HUD with vision cones and agent states</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Media/07-outcome.jpg" width="420"><br><sub>End of a session</sub></td>
+    <td></td>
+  </tr>
+</table>
 
 ## Story
 
