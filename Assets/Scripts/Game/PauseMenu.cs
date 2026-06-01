@@ -47,7 +47,7 @@ public class PauseMenu : MonoBehaviour
         GUI.color = Color.white;
 
         GUILayout.BeginArea(new Rect(r.x + 24, r.y + 20, w - 48, h - 40));
-        GUILayout.Label("PAUSED  —  THE FROZEN WATCH", header);
+        GUILayout.Label("PAUSED: THE FROZEN WATCH", header);
         GUILayout.Space(10);
 
         if (GUILayout.Button("Resume  (Esc)", btn)) TogglePause();

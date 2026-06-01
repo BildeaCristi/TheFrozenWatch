@@ -558,8 +558,10 @@ public class SceneRebuilder : EditorWindow
             sb.AppendLine("  + Archer on " + an + " (fires arrows, range 20)");
         }
 
-        // Zone defence: G6/G7 hold a tight ring around the Watchfire (intercept tunnel
-        // breachers) instead of all rushing the gate; G1/G2/G4 cover the gate approach.
+        // Defence roles: G6/G7 are the dedicated Watchfire squad (useCustomHome -> tight
+        // leash, never abandon the objective). G1/G2/G4 are mobile guards: they roam the
+        // whole field and converge on the real threat, whether it comes over the gate or
+        // out of the A* tunnel. The War Horn (Q) lifts every leash so all guards rally.
         Vector3 wfPos = fireC != null ? fireC.transform.position : new Vector3(0f, 0f, -20f);
         foreach (var gn in new[] { "Guard_6", "Guard_7" })
         {
@@ -571,9 +573,9 @@ public class SceneRebuilder : EditorWindow
         {
             var g = GameObject.Find(gn);
             var fsm = g != null ? g.GetComponent<GuardFSM>() : null;
-            if (fsm != null) fsm.leashRadius = 30f;
+            if (fsm != null) fsm.useCustomHome = false;   // mobile: roam to the threat
         }
-        sb.AppendLine("  + Zone defence: G6/G7 guard the Watchfire (leash 18), G1/G2/G4 guard the gate (leash 30)");
+        sb.AppendLine("  + Defence roles: G6/G7 hold the Watchfire (leash 18); G1/G2/G4 roam to the threat; Q rallies all");
 
         // Guard_1 is player-driven: manual swings, revivable instead of destroyed.
         var g1 = GameObject.Find("Guard_1");

@@ -37,9 +37,10 @@ public class AnimatorBridge : MonoBehaviour
     {
         if (animator == null) return;
 
-        float raw;
-        if (agent != null && agent.enabled && agent.isOnNavMesh) raw = agent.velocity.magnitude;
-        else { float dt = Mathf.Max(Time.deltaTime, 0.0001f); raw = (transform.position - lastPos).magnitude / dt; }
+        // Use actual world movement (works for NavMesh-driven AI AND player agent.Move,
+        // where agent.velocity stays ~0 and would otherwise freeze the walk animation).
+        float dt = Mathf.Max(Time.deltaTime, 0.0001f);
+        float raw = (transform.position - lastPos).magnitude / dt;
         lastPos = transform.position;
 
         smoothed = Mathf.Lerp(smoothed, raw, Time.deltaTime / Mathf.Max(0.01f, damping));

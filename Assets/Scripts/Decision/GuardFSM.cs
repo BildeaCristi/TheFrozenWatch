@@ -20,6 +20,17 @@ public class GuardFSM : MonoBehaviour
     public Vector3 homePoint;            // centre of this guard's defended zone
     public float leashRadius = 40f;      // only engages attackers inside this radius of home
 
+    // War Horn rally: while active, every guard ignores its leash and engages the nearest
+    // threat anywhere on the field (set by Commander on Q).
+    public static float RallyEndTime;
+
+    // Mobile guards (useCustomHome == false) roam the whole field and converge on the real
+    // threat, whether it comes over the gate or out of the A* tunnel. Only the dedicated
+    // Watchfire squad (useCustomHome == true) keeps a tight leash so the objective is never
+    // left open. A War Horn rally lifts every leash for its duration.
+    const float GLOBAL = 9999f;
+    float EffectiveLeash => (Time.time < RallyEndTime || !useCustomHome) ? GLOBAL : leashRadius;
+
     [Header("Self-preservation (Theme 6.3)")]
     public float retreatHealthFrac = 0.3f;   // fall back below this
     public float recoverHealthFrac = 0.7f;   // rejoin the fight above this
@@ -114,11 +125,17 @@ public class GuardFSM : MonoBehaviour
             var c = all[i];
             if (c == null || c.IsDead || c.team != Combatant.Team.Attacker) continue;
             // Only defend our own zone: ignore attackers outside the leash radius of home.
-            if (Vector3.Distance(c.transform.position, homePoint) > leashRadius) continue;
+            if (Vector3.Distance(c.transform.position, homePoint) > EffectiveLeash) continue;
             float dg = Vector3.Distance(c.transform.position, transform.position);
+            // Roaming guards still won't sprint to the far corner of the map for one straggler.
+            float cap = (!useCustomHome && Time.time >= RallyEndTime) ? 80f : GLOBAL;
+            if (dg > cap) continue;
             float dw = Vector3.Distance(c.transform.position, wf);
+            // Most urgent = closest to the Watchfire; easiest = closest to this guard.
+            // Fixed reachable scales (not the leash) so roaming guards still spread across
+            // distinct targets instead of all piling onto the single nearest-to-fire enemy.
             float score = 0.6f * (1f - Mathf.Clamp01(dw / 60f))
-                        + 0.4f * (1f - Mathf.Clamp01(dg / Mathf.Max(1f, leashRadius)));
+                        + 0.4f * (1f - Mathf.Clamp01(dg / 40f));
             if (score > bestScore) { bestScore = score; best = c.transform; }
         }
         return best;
@@ -155,8 +172,8 @@ public class GuardFSM : MonoBehaviour
             }
         }
 
-        // Don't get dragged out of our zone — drop a target that runs too far from home.
-        if (target != null && Vector3.Distance(target.position, homePoint) > leashRadius * 1.4f)
+        // Don't get dragged out of our zone (unless rallying) - drop a far-roaming target.
+        if (target != null && Vector3.Distance(target.position, homePoint) > EffectiveLeash * 1.4f)
         {
             target = null;
             ChangeState(State.Patrol);

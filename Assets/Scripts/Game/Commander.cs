@@ -30,6 +30,7 @@ public class Commander : MonoBehaviour
     {
         CooldownLeft = cooldown;
         BuffLeft = buffDuration;
+        GuardFSM.RallyEndTime = Time.time + buffDuration;   // all guards drop their zone and converge on the threat
 
         Vector3 origin = Watchfire.Instance != null ? Watchfire.Instance.transform.position : transform.position;
         var all = Combatant.All;

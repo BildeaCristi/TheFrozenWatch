@@ -22,6 +22,7 @@ public class TunnelRunner : MonoBehaviour
     List<AStarNode> path;
     int idx;
     bool handed;
+    float stuckT;
 
     void Awake()
     {
@@ -37,24 +38,32 @@ public class TunnelRunner : MonoBehaviour
         if (handed) return;
         if (self != null && self.IsDead) return;
 
-        // Reached the south mouth -> switch to NavMesh for the field run to the Watchfire.
-        if (exit != null && Vector3.Distance(transform.position, exit.position) < 1.6f) { HandOff(); return; }
+        bool routeOpen = grid != null && grid.path != null && grid.path.Count > 0;
 
-        if (grid == null || grid.path == null || grid.path.Count == 0) return;  // doors sealed => no path => wait
+        // Adopt the A* node list ONCE. The auto-pathfinder reassigns an equivalent list
+        // every tick; re-adopting it each time reset our index and froze the unit in place.
+        if (path == null && routeOpen) { path = grid.path; idx = ClosestNodeIndex(); }
+        if (path == null) return;        // never got a route
+        if (!routeOpen) return;          // player sealed the doors -> trapped, wait
 
-        if (!ReferenceEquals(path, grid.path)) { path = grid.path; idx = ClosestNodeIndex(); }
-        if (idx >= path.Count) { HandOff(); return; }
+        // Reached the south mouth (or the end of the path) -> hand off to NavMesh.
+        if (idx >= path.Count || (exit != null && Vector3.Distance(transform.position, exit.position) < 1.8f))
+        { HandOff(); return; }
 
         Vector3 target = path[idx].worldPosition; target.y = transform.position.y;
         Vector3 to = target - transform.position;
         float dist = to.magnitude;
-        if (dist < arriveDist) { idx++; return; }
+        if (dist < arriveDist) { idx++; stuckT = 0f; return; }
 
         Vector3 dir = to / dist;
         transform.position += dir * speed * Time.deltaTime;
         Vector3 flat = new Vector3(dir.x, 0f, dir.z);
         if (flat.sqrMagnitude > 0.001f)
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(flat), turnSpeed * Time.deltaTime);
+
+        // Anti-stuck: if a node stays unreachable too long, skip it.
+        stuckT += Time.deltaTime;
+        if (stuckT > 2.5f) { idx++; stuckT = 0f; }
     }
 
     int ClosestNodeIndex()
@@ -71,11 +80,21 @@ public class TunnelRunner : MonoBehaviour
     void HandOff()
     {
         handed = true;
-        if (agent != null)
-        {
-            agent.enabled = true;
-            if (NavMesh.SamplePosition(transform.position, out var h, 4f, NavMesh.AllAreas)) agent.Warp(h.position);
-        }
         if (siege != null) siege.enabled = true;
+        if (agent == null) return;
+
+        agent.enabled = true;
+
+        // Snap onto the NavMesh. If the exact spot isn't covered, fall back to the open
+        // field just south of the tunnel mouth so the unit never gets stranded.
+        NavMeshHit h;
+        bool placed = NavMesh.SamplePosition(transform.position, out h, 10f, NavMesh.AllAreas);
+        if (!placed)
+            placed = NavMesh.SamplePosition(new Vector3(transform.position.x, 0f, -16f), out h, 25f, NavMesh.AllAreas);
+        if (placed) agent.Warp(h.position);
+
+        agent.isStopped = false;
+        if (siege != null && siege.objective != null && agent.isOnNavMesh)
+            agent.SetDestination(siege.objective.position);   // head straight for the Watchfire
     }
 }
