@@ -354,10 +354,10 @@ public class GameDirector : MonoBehaviour
         switch (CurrentPhase)
         {
             case Phase.PreGame:      return "PREPARE  —  Enter/B to begin";
-            case Phase.Fighting:     return $"WAVE {WaveNumber}/{TotalWaves}  —  enemies left: {AttackersAlive}";
-            case Phase.BetweenWaves: return $"WAVE {WaveNumber} CLEARED  —  next in {Mathf.CeilToInt(Countdown)}s";
-            case Phase.Won:          return "THE WATCH HELD — VICTORY!  (R to restart)";
-            case Phase.Lost:         return "THE WATCHFIRE IS OUT — DEFEAT  (R to restart)";
+            case Phase.Fighting:     return $"WAVE {WaveNumber}/{TotalWaves}:  enemies left: {AttackersAlive}";
+            case Phase.BetweenWaves: return $"WAVE {WaveNumber} CLEARED:  next in {Mathf.CeilToInt(Countdown)}s";
+            case Phase.Won:          return "THE WATCH HELD - VICTORY!  (R to restart)";
+            case Phase.Lost:         return "THE WATCHFIRE IS OUT - DEFEAT  (R to restart)";
         }
         return "";
     }
